@@ -11,62 +11,65 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/people")
 public class UsersController {
 
     private final UsersService usersService;
+    @GetMapping("/")
+    public String index(){
+        return "redirect:/users";
+    }
 
     @Autowired
     public UsersController(UsersService usersService) {
         this.usersService = usersService;
     }
 
-    @GetMapping()
+    @GetMapping("/users")
     public String index(Model model) {
-        model.addAttribute("people", usersService.findAll());
-        return "people/index";
+        model.addAttribute("users", usersService.findAll());
+        return "users/index";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", usersService.findOne(id));
-        return "people/show";
+        model.addAttribute("user", usersService.findOne(id));
+        return "users/show";
     }
 
-    @GetMapping("/new")
-    public String newPerson(@ModelAttribute("person") User user) {
-        return "people/new";
+    @GetMapping("/users/new")
+    public String newUser(@ModelAttribute("user") User user) {
+        return "users/new";
     }
 
-    @PostMapping()
-    public String create(@ModelAttribute("person") @Valid User user,
+    @PostMapping("/users")
+    public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-            return "people/new";
+            return "users/new";
 
         usersService.save(user);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/users/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("person", usersService.findOne(id));
-        return "people/edit";
+        model.addAttribute("user", usersService.findOne(id));
+        return "users/edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid User user, BindingResult bindingResult,
+    @PatchMapping("/users/{id}")
+    public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
-            return "people/edit";
+            return "users/edit";
 
         usersService.update(id, user);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public String delete(@PathVariable("id") int id) {
         usersService.delete(id);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 }

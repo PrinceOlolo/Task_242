@@ -1,13 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="spring-data-jpa-crud-app:war exploded">
-    <output-path>$PROJECT_DIR$/target/spring-mvc-app1</output-path>
-    <properties id="maven-jee-properties">
-      <options>
-        <exploded>true</exploded>
-        <module>spring-data-jpa-crud-app</module>
-        <packaging>war</packaging>
-      </options>
-    </properties>
+  <artifact type="exploded-war" name="Task 2.3.1:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Task_2_3_1_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -56,9 +49,6 @@
           <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:2.4.7" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.9.6" />
         </element>
-      </element>
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/spring-mvc-app1/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="Task 2.3.1/web/Web" />
     </root>
