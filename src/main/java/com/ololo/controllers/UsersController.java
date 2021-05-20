@@ -1,7 +1,7 @@
 package com.ololo.controllers;
 
 import com.ololo.model.User;
-import com.ololo.services.UsersService;
+import com.ololo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,67 +9,82 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class UsersController {
 
-    private final UsersService usersService;
-    @GetMapping("/")
-    public String index(){
-        return "redirect:/users";
-    }
+    private final UserService userService;
+   // @GetMapping("/")
+   // public String index(){
+    //    return "redirect:/admin/users";
+   // }
 
     @Autowired
-    public UsersController(UsersService usersService) {
-        this.usersService = usersService;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/admin/users")
     public String index(Model model) {
-        model.addAttribute("users", usersService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "users/index";
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/page")
+    public String userP(Principal principal, Model model) {
+    User user = (User) userService.findByEmail(principal.getName());
+    model.addAttribute("user", user);
+        return "users/userPage";
+    }
+
+//    @GetMapping("/user/{id}")
+//    public String userPage(@PathVariable("id") int id, Model model) {
+//        model.addAttribute("user", userService.findOne(id));
+//        return "users/userPage";
+//    }
+
+    @GetMapping("/admin/users/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", userService.findOne(id));
         return "users/show";
     }
 
-    @GetMapping("/users/new")
+    @GetMapping("/admin/users/new")
     public String newUser(@ModelAttribute("user") User user) {
         return "users/new";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/admin/users")
     public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "users/new";
 
-        usersService.save(user);
-        return "redirect:/users";
+        userService.saveUser(user);
+
+        return "redirect:/admin/users";
     }
 
-    @GetMapping("/users/{id}/edit")
+    @GetMapping("/admin/users/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", usersService.findOne(id));
+        model.addAttribute("user", userService.findOne(id));
         return "users/edit";
     }
 
-    @PatchMapping("/users/{id}")
+    @PatchMapping("/admin/users/{id}")
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "users/edit";
 
-        usersService.update(id, user);
-        return "redirect:/users";
+        userService.update(id, user);
+        return "redirect:/admin/users";
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/admin/users/{id}")
     public String delete(@PathVariable("id") int id) {
-        usersService.delete(id);
-        return "redirect:/users";
+        userService.delete(id);
+        return "redirect:/admin/users";
     }
 }

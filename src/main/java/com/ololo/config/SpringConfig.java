@@ -25,7 +25,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 @ComponentScan("com.ololo")
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaRepositories("com.ololo.repositories")
 @EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
